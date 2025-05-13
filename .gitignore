@@ -180,5 +180,6 @@ cython_debug/
 报告模板.pdf
 PBL项目.pdf
 
-# Saved datas
+# Saved data
 data/
+figures/
