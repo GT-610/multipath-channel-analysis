@@ -19,14 +19,16 @@ def deconvolution(r, h, epsilon=1e-3):
     S_recover = R / (H + epsilon)  # 频域除法
     return np.real(ifft(S_recover))  # 逆FFT恢复时域信号
 
-def align_signals(s, equalized, h):
+def align_signals(s, equalized, h=None):
     """
-    对齐均衡后信号与原始发送信号
-    s: 发送信号
-    equalized: 均衡后信号
-    h: 信道冲激响应
+    改进后的信号对齐方法，使用互相关寻找最佳延迟
     """
-    delay = len(h) // 2  # 匹配滤波器的固定延迟
-    aligned_equalized = equalized[delay:delay + len(s)]  # 截取有效信号段
-    aligned_s = s[:len(aligned_equalized)]  # 截取等长的发送信号
+    # 计算互相关寻找最佳对齐位置
+    corr = np.correlate(equalized, s, mode='valid')
+    delay = np.argmax(corr)
+    
+    # 确保截取长度不超过信号长度
+    valid_length = min(len(s), len(equalized) - delay)
+    aligned_equalized = equalized[delay:delay+valid_length]
+    aligned_s = s[:valid_length]
     return aligned_s, aligned_equalized
