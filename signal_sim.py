@@ -5,15 +5,15 @@ from channel_model import generate_channel
 
 def generate_bpsk_signal(num_bits=100, sps=10):
     """
-    生成BPSK调制信号
-    num_bits: 二进制比特数
-    sps: 每个符号的采样点数
+    Generate BPSK modulated signal
+    num_bits: Number of binary bits
+    sps: Samples per symbol
     """
-    # 生成随机比特流
+    # Generate random bit stream
     bits = np.random.randint(0, 2, num_bits)
-    # BPSK映射（0→-1, 1→1）
+    # BPSK mapping (0→-1, 1→1)
     bpsk_symbols = 2 * bits - 1
-    # 插入sps-1个零进行升采样（模拟脉冲成形）
+    # Insert sps-1 zeros for upsampling (pulse shaping simulation)
     s = np.zeros(num_bits * sps)
     s[::sps] = bpsk_symbols
     save_data(s, "transmitted_signal")
@@ -22,13 +22,13 @@ def generate_bpsk_signal(num_bits=100, sps=10):
 
 def simulate_transmission(s, h, add_noise_flag=False):
     """
-    模拟信号传输：r(t) = s(t) * h(t)
-    s: 发送信号
-    h: 信道冲激响应
+    Simulate signal transmission: r(t) = s(t) * h(t)
+    s: Transmitted signal
+    h: Channel impulse response
     """
-    r = convolve(s, h, mode='full')  # 卷积模拟多径传播
+    r = convolve(s, h, mode='full')  # Convolution to simulate multipath propagation
     if add_noise_flag:
-        r = add_noise(r, snr_dB=10)  # 可选：添加噪声
+        r = add_noise(r, snr_dB=10)  # Optional: Add noise
     save_data(r, "received_signal")
     plot_signal(np.arange(len(r)), r, "Received Signal")
     return r

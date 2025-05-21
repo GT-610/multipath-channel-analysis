@@ -3,14 +3,14 @@ import matplotlib.pyplot as plt
 import os
 
 def save_data(data, filename):
-    """保存数据到data目录"""
+    """Save data to the data directory"""
     target_dir = "data"
     if not os.path.exists(target_dir):
         os.makedirs(target_dir)
     np.save(f"{target_dir}/{filename}.npy", data)
 
 def plot_signal(t, s, title, xlabel="Time", ylabel="Amplitude"):
-    """绘制信号波形图"""
+    """Plot the waveform of the signal"""
     target_dir = "figures"
     if not os.path.exists(target_dir):
         os.makedirs(target_dir)

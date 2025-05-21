@@ -175,11 +175,3 @@ cython_debug/
 
 # Anaconda
 .conda/
-
-# Report templates (Sorry but these are private)
-报告模板.pdf
-PBL项目.pdf
-
-# Saved data
-data/
-figures/

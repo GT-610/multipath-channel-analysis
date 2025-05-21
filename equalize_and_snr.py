@@ -4,37 +4,35 @@ from utils import plot_signal
 from scipy.stats import norm
 
 def calculate_snr(signal, noise):
-    """计算信噪比（SNR）"""
+    """Calculate Signal-to-Noise Ratio (SNR)"""
     signal_power = np.var(signal)
     noise_power = np.var(noise)
     return 10 * np.log10(signal_power / noise_power)
 
 if __name__ == "__main__":
-    # 加载数据
+    # Load data
     s = np.load("data/transmitted_signal.npy")
     r = np.load("data/received_signal.npy")
     h = np.load("data/channel_impulse.npy")
 
-    # 修改1：先对齐原始接收信号
-    aligned_s, aligned_r = align_signals(s, r)  # 新增接收信号对齐
+    aligned_s, aligned_r = align_signals(s, r)  # New signal alignment
     
-    # 修改2：统一使用改进后的对齐方法
     # equalized = match_filter(r, h)
-    equalized = deconvolution(r, h)  # 改用逆卷积法
+    equalized = deconvolution(r, h)  # Use inverse convolution method
     
-    # 对齐信号
+    # Align signals
     aligned_s, aligned_equalized = align_signals(s, equalized, h)
 
-    # 保存均衡后信号
+    # Save equalized signal
     np.save("data/equalized_signal.npy", equalized)
-    # 绘制均衡前后对比图
+    # Plot comparison before/after equalization
     plot_signal(np.arange(len(equalized)), equalized, "Equalized Signal")
 
-    # 计算SNR
-    noise_before = aligned_r - aligned_s  # 使用对齐后的接收信号
+    # Calculate SNR
+    noise_before = aligned_r - aligned_s  # Using aligned received signal
     noise_after = aligned_equalized - aligned_s
     
-    # 新增：验证信号对齐效果
+    # Validate signal alignment effectiveness
     print(f"Alignment check - Before length: {len(aligned_r)}, After length: {len(aligned_equalized)}")
     
     snr_before = calculate_snr(aligned_s, noise_before)

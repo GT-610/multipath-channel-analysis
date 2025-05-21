@@ -4,10 +4,10 @@ from utils import plot_signal
 
 def analyze_frequency(s, r, fs=1e6):
     """
-    频域分析：比较发送与接收信号频谱
-    s: 发送信号
-    r: 接收信号
-    fs: 采样率
+    Frequency-domain analysis: Compare transmitted and received signal spectra
+    s: Transmitted signal array
+    r: Received signal array
+    fs: Sampling rate (Hz)
     """
     S = fft(s)
     R = fft(r)

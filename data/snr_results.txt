@@ -1,0 +1,4 @@
+Alignment check - Before length: 1000, After length: 1000
+Noise before equalization: -14.20 dB
+Noise after equalization: -62.48 dB
+SNR Before: 4.20 dB, After: 52.48 dB
